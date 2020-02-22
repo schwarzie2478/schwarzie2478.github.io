@@ -13,6 +13,38 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
+.btn-color-one {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+.btn-color-two {
+    color: #fff;
+    background-color: #c21b1b;
+    border-color: #c21b1b;
+}
+.btn-color-three {
+    color: #fff;
+    background-color: #1bc261;
+    border-color: #1bc261;
+}
+.btn-color-four {
+    color: #fff;
+    background-color: #fff12a;
+    border-color: #fff12a;
+}
+.btn-color-five {
+    color: #fff;
+    background-color: #c21b90;
+    border-color: #c21b90;
+}
+.btn-color-six {
+    color: #fff;
+    background-color: #88661c;
+    border-color: #88661c;
+}
+
+
 
 app {
     position: relative;
