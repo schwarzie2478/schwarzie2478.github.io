@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Microsoft.AspNetCore.Components.dll": "sha256-aY7qevQEVFSHM9OxNZGWgVrhkQNG\/d88Fvzkij1EF9M=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-Y5nyirklLe2+zvzS7prNiOYTXa1SmfdRpytXALfuK2k=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-t+5e7mbh+kIHcpPGo3D3jTsKx3V24F3AZSWMUP0maWw=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-GJfk4jAnMpTvXrJoZZD3PY8hm9Bff5n+H4jcZgvzfAg=",
       "Microsoft.CSharp.dll": "sha256-oxtRrRReb6e1uR8Wid\/zvLrze2ZxRvRmZqF7SHDICPc=",
@@ -28,7 +28,7 @@
       "netstandard.dll": "sha256-noYS\/434bmk2BpiBMZfxQghSzy7SJnl05WXunXu5PMY=",
       "Newtonsoft.Json.Bson.dll": "sha256-tgbl3XemJCyh8d9xfrU9lQWuVpBDMLl1wI1PLb6MMxk=",
       "Newtonsoft.Json.dll": "sha256-etsgJYQb32kqVnEuCK\/nXhcwxx1keKj+1XWs1DJRpmI=",
-      "OpenAI.BlazorChat.dll": "sha256-6WZjflPT6KIv\/7XgFT8DfBytqqjV78kiulQMSuBQyVY=",
+      "OpenAI.BlazorChat.dll": "sha256-UGbiIpzik61GHgG8VjeCiKcOJmMPN9ILKdo0PwprXe0=",
       "OpenAI.GPT3.dll": "sha256-3HbR\/xv0SryKA906yd+oQPoHGn0ckYukVi2tKa7beLs=",
       "System.Collections.Concurrent.dll": "sha256-2Jf\/3hlQxfOFOnqbCR3qXW6rb6K2yCjJxNuzPr93YqE=",
       "System.Collections.dll": "sha256-JIOEXyuF+K+9CPLBImrP+t9T0FvRqiGH8x0MitgZeLU=",
