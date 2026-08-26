@@ -1,64 +1,376 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+/* Treasure Hunter layout
+ * Playfield image is 1800x941 (ratio ~1.913:1).
+ * All card zones are positioned with absolute percentage coordinates
+ * so the field stays centered and aspect-locked at any window size.
+ *
+ * Card size is uniform everywhere: cards are forced to fit inside their
+ * bounding box via max-width/max-height + object-fit:contain.
+ */
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #1a1208;
+    color: #f5e9c9;
+    min-height: 100%;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
-h1:focus {
-    outline: none;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-a, .btn-link {
-    color: #0071c1;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
-}
-
-#blazor-error-ui {
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
+.game-shell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    min-height: 100vh;
+    box-sizing: border-box;
     width: 100%;
-    z-index: 1000;
+    max-width: 100vw;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
-
-.blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
-    color: white;
+.game-header {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.game-header h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #f5e9c9;
+    letter-spacing: 0.05em;
+}
+
+.hud {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.hud-item {
+    background: rgba(0,0,0,0.45);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #6b4a1c;
+    white-space: nowrap;
+}
+
+.playfield-wrap {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.playfield {
+    position: relative;
+    width: 100%;
+    max-width: min(1400px, 100vw - 16px);
+    aspect-ratio: 1800 / 941;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid #6b4a1c;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+.zone {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    /* overflow:hidden removed: stacked cards are allowed to extend above/below
+       the box so you can read every card. The draw/discard piles set their own
+       overflow on a per-zone basis. */
+}
+
+/* Draw and discard piles show only one card on top of a back, so a hidden
+   overflow is fine and keeps the card nicely inside its box. */
+.zone-draw-adv,
+.zone-draw-boon,
+.zone-discard-adv,
+.zone-discard-boon {
+    overflow: hidden;
+}
+
+.zone-count {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.zone-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20,20,20,0.85);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+    max-width: 90%;
+}
+
+/* Layout based on the playfield image (1800x941). All positions are
+ * percentages of the playfield so they scale perfectly with width.
+ *
+ * Top row boxes (cards) span y = 7.1%..42.1% (35.0% tall).
+ * Bottom row boxes (boons + LOOSE CARDS) span y = 42.1%..88.2% (46.1% tall).
+ * The decorative right column spans x = 88.75%..99.89% in the top row.
+ * Base Camp (LOOSE CARDS) spans x = 79.7%..99.89% on the bottom row.
+ */
+.zone-discard-adv  { left: 3.4%;  top: 7.1%; width: 15.5%; height: 35.0%; }
+.zone-draw-adv     { left: 18.9%; top: 7.1%; width: 14.6%; height: 35.0%; }
+
+.zone-stack.stack-0 { left: 33.6%; top: 7.1%; width: 14.0%; height: 35.0%; }
+.zone-stack.stack-1 { left: 47.6%; top: 7.1%; width: 13.7%; height: 35.0%; }
+.zone-stack.stack-2 { left: 61.3%; top: 7.1%; width: 13.7%; height: 35.0%; }
+.zone-stack.stack-3 { left: 75.1%; top: 7.1%; width: 13.7%; height: 35.0%; }
+
+.zone-discard-boon  { left: 3.8%;  top: 42.1%; width: 14.7%; height: 46.1%; }
+.zone-draw-boon     { left: 18.5%; top: 42.1%; width: 13.8%; height: 46.1%; }
+.zone-base-camp     { left: 79.7%; top: 42.1%; width: 20.2%; height: 46.1%; }
+
+.zone-boon-slot.boon-slot-0 { left: 32.3%; top: 42.1%; width: 12.0%; height: 46.1%; }
+.zone-boon-slot.boon-slot-1 { left: 44.3%; top: 42.1%; width: 11.8%; height: 46.1%; }
+.zone-boon-slot.boon-slot-2 { left: 56.1%; top: 42.1%; width: 11.7%; height: 46.1%; }
+/* Card sizing: every card image is rendered with width:100% and
+   height:100% inside its zone, with object-fit:contain so the
+   card's aspect ratio is preserved and the image is letterboxed
+   rather than stretched. The card slots are slightly different
+   widths in the playfield, so the cards look the same shape
+   (1140:1549 portrait) but with a small horizontal padding
+   inside narrower boxes. This is intentional: every card stays
+   the same shape and size on screen. */
+.adventure-card-img,
+.boon-card-img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    border-radius: 4px;
+}
+.zone-base-camp .base-camp-label {
+    position: absolute;
+    top: 2%;
+    left: 4%;
+    width: 44%;
+    text-align: center;
+    color: #c9b27a;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 2;
+}
+.zone-base-camp .base-camp-card {
+    position: absolute;
+    left: 4%;
+    top: 12%;
+    width: 44%;
+    height: 76%;
+    aspect-ratio: 1140 / 1549;
+    pointer-events: none;
+    z-index: 2;
+    margin: 0;
+}
+.zone-base-camp .base-camp-card > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+.zone-base-camp .held-card {
+    position: absolute;
+    right: 4%;
+    top: 12%;
+    width: 44%;
+    height: 76%;
+    aspect-ratio: 1140 / 1549;
+    pointer-events: none;
+    z-index: 3;
+}
+.zone-base-camp .held-card > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    box-shadow: 0 0 8px rgba(255, 220, 120, 0.85);
+}
+.adventure-card-img.back {
+    background: #2a1808;
+}
+
+.stack-card {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(calc(var(--depth) * -10%));
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 120ms ease;
+}
+
+.stack-card.top {
+    z-index: 10;
+}
+
+.stack-card.top.selected {
+    transform: translateX(-50%) translateY(calc(var(--depth) * -10% - 6%)) scale(1.06);
+    filter: brightness(1.25) drop-shadow(0 0 12px rgba(255, 230, 120, 0.95));
+    z-index: 30;
+}
+
+.stack-card.top:hover {
+    transform: translateX(-50%) translateY(calc(var(--depth) * -10% - 4%)) scale(1.04);
+    cursor: pointer;
+}
+
+.stack-card.top.suit-skull   { filter: drop-shadow(0 0 5px rgba(160,160,160,0.7)); }
+.stack-card.top.suit-gem     { filter: drop-shadow(0 0 5px rgba(220,40,40,0.7)); }
+.stack-card.top.suit-dagger  { filter: drop-shadow(0 0 5px rgba(40,90,200,0.7)); }
+.stack-card.top.suit-coin    { filter: drop-shadow(0 0 5px rgba(220,180,40,0.7)); }
+
+.stack-card.top.selected.suit-skull   { filter: brightness(1.25) drop-shadow(0 0 12px rgba(220,220,220,0.95)); }
+.stack-card.top.selected.suit-gem     { filter: brightness(1.25) drop-shadow(0 0 12px rgba(255,80,80,0.95)); }
+.stack-card.top.selected.suit-dagger  { filter: brightness(1.25) drop-shadow(0 0 12px rgba(80,140,255,0.95)); }
+.stack-card.top.selected.suit-coin    { filter: brightness(1.25) drop-shadow(0 0 12px rgba(255,220,80,0.95)); }
+
+.zone-boon-slot:hover {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+}
+
+.game-over {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.game-over-card {
+    background: #2a1808;
+    border: 2px solid #6b4a1c;
+    border-radius: 12px;
+    padding: 24px 32px;
+    text-align: center;
+    color: #f5e9c9;
+    max-width: 80%;
+}
+
+.game-over-card h2 { margin-top: 0; }
+
+.game-over-card .muted { color: #c9b27a; font-size: 0.85rem; }
+
+.round-banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(40,80,20,0.94);
+    color: #f5f5d0;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid #6c8a3a;
+    z-index: 50;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+}
+
+.boon-banner {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(40,80,20,0.85);
+    color: #f5f5d0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #6c8a3a;
+    z-index: 50;
+    font-size: 0.9rem;
+}
+
+/* Active boon slot: a yellow glow around the boon card to show it is armed. */
+.zone-boon-slot.boon-active {
+    filter: drop-shadow(0 0 14px rgba(255, 220, 80, 0.95));
+}
+.zone-boon-slot.boon-active .boon-card-img {
+    transform: scale(1.04);
+    transition: transform 120ms ease;
+}
+.zone-base-camp.boon-active {
+    filter: drop-shadow(0 0 14px rgba(255, 220, 80, 0.95));
+}
+
+/* Card the user has picked as part of a 2-step boon (Local Guide, Climbing Rope). */
+.stack-card.top.boon-target {
+    outline: 3px dashed rgba(255, 220, 80, 0.9);
+    outline-offset: 4px;
+    z-index: 25;
+}
+
+/* Empty stack targeted for Base Camp return. */
+.zone-stack.boon-target-empty {
+    outline: 3px dashed rgba(255, 220, 80, 0.9);
+    outline-offset: 4px;
+}
+.floating-boon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.floating-hint {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(40,80,20,0.9);
+    color: #f5f5d0;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #6c8a3a;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+@keyframes floatBob {
+    from { transform: translate(-50%, calc(-50% - 8px)); }
+    to   { transform: translate(-50%, calc(-50% + 8px)); }
+}
