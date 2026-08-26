@@ -160,6 +160,7 @@ html, body {
 .zone-boon-slot.boon-slot-0 { left: 32.3%; top: 42.1%; width: 12.0%; height: 46.1%; }
 .zone-boon-slot.boon-slot-1 { left: 44.3%; top: 42.1%; width: 11.8%; height: 46.1%; }
 .zone-boon-slot.boon-slot-2 { left: 56.1%; top: 42.1%; width: 11.7%; height: 46.1%; }
+.zone-boon-slot.boon-slot-3 { left: 67.8%; top: 42.1%; width: 11.9%; height: 46.1%; }
 /* Card sizing: every card image is rendered with width:100% and
    height:100% inside its zone, with object-fit:contain so the
    card's aspect ratio is preserved and the image is letterboxed
