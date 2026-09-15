@@ -40,6 +40,9 @@ body {
 }
 
 .game-header {
+    /* Tall stacks can extend above the board; keep score and restart usable. */
+    position: relative;
+    z-index: 40;
     width: 100%;
     max-width: 1400px;
     display: flex;
@@ -430,6 +433,13 @@ body {
 }
 
 .game-over-card h2 { margin-top: 0; }
+
+.game-over-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
 
 .game-over-card .muted { color: #c9b27a; font-size: 0.85rem; }
 
