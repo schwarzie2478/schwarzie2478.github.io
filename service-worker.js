@@ -18,7 +18,7 @@
  * the old caches.
  */
 
-const CACHE_VERSION = 'release-3c234bf';
+const CACHE_VERSION = 'release-33d96e1';
 const SHELL_CACHE = `th-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `th-runtime-${CACHE_VERSION}`;
 
@@ -30,6 +30,10 @@ const SHELL_FILES = [
     '/icon-192.png',
     '/icon-512.png',
     '/css/app.css',
+    '/treasure-hunter-header.png',
+    '/js/language.js',
+    '/js/boon-preview.js',
+    ...['Base%20Camp', 'Climbing%20Rope', 'Flashlight', 'Local%20Guide', 'Map'].map(name => `/cards/Boons/nl/${name}.png`),
     '/PlayingField.png',
     '/TreasureHunter.styles.css',
     '/lib/bootstrap/dist/css/bootstrap.min.css',

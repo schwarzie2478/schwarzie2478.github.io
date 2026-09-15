@@ -51,11 +51,58 @@ body {
 }
 
 .game-brand {
+    position: relative;
     margin: 0;
     flex: 0 1 360px;
     max-width: 100%;
     line-height: 0;
 }
+
+.brand-nl { overflow: hidden; border-radius: 6px; }
+.brand-subtitle {
+    position: absolute;
+    inset: 65% 0 0;
+    background: linear-gradient(100deg, #ede6d6, #faf9f5 55%, #eee8dc);
+    color: #211d17;
+    font-size: clamp(11px, 1.15vw, 15px);
+    line-height: 1.25;
+    font-style: italic;
+    text-align: center;
+    padding: 3px 14px;
+}
+.header-controls { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; max-width: 100%; }
+.language-choice { display: flex; align-items: center; gap: 8px; color: #392d20; font-size: 0.9rem; }
+.language-choice select { border: 1px solid #b49a70; border-radius: 6px; background: #fff9ec; color: #392d20; padding: 5px 8px; }
+@media (max-width: 700px) {
+    .header-controls { align-items: flex-start; }
+    .brand-subtitle { font-size: 13px; }
+}
+
+/* Translated labels cover only the lettering baked into the board artwork.
+   They sit below the cards and never intercept playfield clicks. */
+.playfield { container-type: inline-size; }
+.board-label {
+    position: absolute;
+    background: #c88b47;
+    box-shadow: 0 0 6px 3px #c88b47;
+    color: #39250e;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.65cqw;
+    line-height: 1.1;
+    pointer-events: none;
+}
+.board-open { left: 50%; top: 2%; width: 20%; height: 4%; }
+.board-green { left: 39%; top: 47.4%; width: 25%; height: 4.4%; color: #34421b; }
+.board-loose { left: 83%; top: 47.4%; width: 16%; height: 4.4%; color: #34421b; }
+.board-discard { left: 5%; top: 21%; width: 11%; height: 8%; display: grid; place-items: center; }
+.board-draw { left: 20%; top: 21%; width: 10%; height: 8%; display: grid; place-items: center; }
+.board-green-discard { left: 4.8%; top: 66%; width: 11%; height: 9%; color: #34421b; display: grid; place-items: center; }
+.board-green-draw { left: 19.2%; top: 66%; width: 11%; height: 9%; color: #34421b; display: grid; place-items: center; }
+.board-discard, .board-draw, .board-green-discard, .board-green-draw { font-size: 1.35cqw; }
+
+#blazor-error-ui { display: none; background: #fff4d6; color: #392d20; padding: 12px; position: fixed; bottom: 0; width: 100%; z-index: 1000; }
 
 .game-brand img {
     display: block;
