@@ -10,8 +10,8 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #1a1208;
-    color: #f5e9c9;
+    background: #e7dcc5;
+    color: #392d20;
     min-height: 100%;
     font-family: 'Georgia', 'Times New Roman', serif;
     overflow-x: hidden;
@@ -19,6 +19,14 @@ html, body {
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+
+body {
+    background:
+        radial-gradient(ellipse at 10% 0%, rgba(165, 132, 82, 0.25), transparent 55%),
+        radial-gradient(ellipse at 100% 100%, rgba(165, 132, 82, 0.22), transparent 60%),
+        linear-gradient(120deg, #e7dcc5, #f6f1e6 48%, #e5d7bc);
+    background-attachment: fixed;
+}
 
 .game-shell {
     display: flex;
@@ -37,16 +45,24 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 12px 24px;
 }
 
-.game-header h1 {
+.game-brand {
     margin: 0;
-    font-size: 1.3rem;
-    color: #f5e9c9;
-    letter-spacing: 0.05em;
+    flex: 0 1 360px;
+    max-width: 100%;
+    line-height: 0;
+}
+
+.game-brand img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(92, 65, 29, 0.12);
 }
 
 .hud {
@@ -55,14 +71,31 @@ html, body {
     align-items: center;
     flex-wrap: wrap;
     font-size: 0.85rem;
+    color: #392d20;
 }
 
 .hud-item {
-    background: rgba(0,0,0,0.45);
+    background: rgba(255, 250, 237, 0.8);
     padding: 3px 8px;
     border-radius: 6px;
-    border: 1px solid #6b4a1c;
+    border: 1px solid #b49a70;
     white-space: nowrap;
+}
+
+.game-header .btn-primary {
+    background: #665033;
+    border-color: #665033;
+    color: #fffaf0;
+}
+
+.game-header .btn-primary:hover {
+    background: #4c3923;
+    border-color: #4c3923;
+}
+
+.game-header .btn-primary:focus-visible {
+    outline: 3px solid #947342;
+    outline-offset: 3px;
 }
 
 .playfield-wrap {
@@ -70,7 +103,7 @@ html, body {
     max-width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     flex: 1;
 }
 
@@ -84,7 +117,7 @@ html, body {
     background-position: center;
     border: 2px solid #6b4a1c;
     border-radius: 8px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    box-shadow: 0 5px 24px rgba(92, 65, 29, 0.28);
 }
 
 .zone {
