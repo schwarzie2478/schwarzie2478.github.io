@@ -18,7 +18,7 @@
  * the old caches.
  */
 
-const CACHE_VERSION = 'release-33d96e1';
+const CACHE_VERSION = 'release-e3ac158';
 const SHELL_CACHE = `th-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `th-runtime-${CACHE_VERSION}`;
 
